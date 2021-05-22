@@ -1,6 +1,16 @@
 # Clinic-System
 Repository for Team A's subprogram, Clinic System
 
+#### Requirements for Use Case 01
+- **REQ-2(10pts)** : As patient and doctor, clinic must be have talk-to-talk system to provide real-world care experience.
+
+- **REQ-4(10pts)** : As patient and doctor, to communicate clearly, chatting must support the input case of Hangul, English, numbers(digits), and special symbols.
+
+- **REQ-5(2pts)** : As patient and doctor, If a face-to-face diagnosis is required, the doctor must be able to transmit his/her hospital address.
+
+-  **REQ-6(8pts)** : As patient and doctor, transfer button or designated key for transmission must exist for transmission of chattings.
+
+- **REQ-7(4pts)** : As patient and doctor, there must be designated key that supports changing lines for legible chatting.
 ## Requirement
 - Windows, MacOS or Linux (Ubuntu recommended)
 - Python 3 (We tested in conda, but not necessary)
