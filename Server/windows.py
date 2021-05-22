@@ -3,7 +3,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 import sys
 import socket
-import server
+from Server import server
 
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
