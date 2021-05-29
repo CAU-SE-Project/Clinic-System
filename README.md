@@ -19,11 +19,11 @@ git clone https://github.com/CAU-SE-Project/Clinic-System
 ```
 
 ### Using Anaconda
-- Setup the anaconda virtual environment and installing requirements ([How to use anaconda](https://conda.io/docs/user-guide/install/index.html))
+- Setup the anaconda virtual environment and installing requirements
 
 ```
 cd Clinic-System
 conda create -n clinic_system python=3.6
-source activate clinic_system
+conda activate clinic_system
 pip install PyQt5
 ```
