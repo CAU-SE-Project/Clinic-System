@@ -5,22 +5,37 @@ import sys
 import client
 
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-
 port = 5614
 
-
-class CWidget(QWidget):
+class Connection():
   def __init__(self):
-    super().__init__()
+    self.requestConnection()
 
-    self.c = client.ClientSocket(self)
+  def requestConnection(self):
+    self.clientIP = client.ClientSocket(self)
 
-    self.initUI()
+class Chat():
+  def inputStream(self):
+    return self.sendmsg.toPlainText()
 
-  def __del__(self):
-    self.c.stop()
+  def checkNull(self, stream):
+    if len(stream) == 0:
+      return True
+    else :
+      return False
 
-  def initUI(self):
+class Sender(Chat):
+  def sendChat(self):
+    sendmsg = super().inputStream()
+
+    if super().checkNull(sendmsg):
+      pass
+    else :
+      self.clientIP.send(sendmsg)
+      self.sendmsg.clear()
+
+class Displayer():
+  def displayChat(self):
     self.setWindowTitle('클라이언트')
 
     # 클라이언트 설정 부분
@@ -73,7 +88,7 @@ class CWidget(QWidget):
     box.addLayout(hbox)
     self.sendbtn = QPushButton('보내기')
     self.sendbtn.setAutoDefault(True)
-    self.sendbtn.clicked.connect(self.sendMsg)
+    self.sendbtn.clicked.connect(self.sendChat)
 
     self.clearbtn = QPushButton('채팅창 지움')
     self.clearbtn.clicked.connect(self.clearMsg)
@@ -90,19 +105,26 @@ class CWidget(QWidget):
 
     self.show()
 
+  def clearMsg(self):
+    self.recvmsg.clear()
+
+  def closeEvent(self, e):
+    self.c.stop()
+
+class DatabaseConnection(Chat):
   def connectClicked(self):
-    if self.c.bConnect == False:
+    if self.clientIP.bConnect == False:
       ip = self.ip.text()
       port = self.port.text()
-      if self.c.connectServer(ip, int(port)):
+      if self.clientIP.connectServer(ip, int(port)):
         self.btn.setText('접속 종료')
       else:
-        self.c.stop()
+        self.clientIP.stop()
         self.sendmsg.clear()
         self.recvmsg.clear()
         self.btn.setText('접속')
     else:
-      self.c.stop()
+      self.clientIP.stop()
       self.sendmsg.clear()
       self.recvmsg.clear()
       self.btn.setText('접속')
@@ -113,20 +135,19 @@ class CWidget(QWidget):
   def updateDisconnect(self):
     self.btn.setText('접속')
 
-  def sendMsg(self):
-    sendmsg = self.sendmsg.toPlainText()
-    self.c.send(sendmsg)
-    # print(self.ip.text(),self.port.text(), sendmsg)
-    self.sendmsg.clear()
+class Controller(QWidget, Connection, Sender, Displayer, DatabaseConnection):
+  def __init__(self):
+    self.enterClinic()
+    self.displayChat()
 
-  def clearMsg(self):
-    self.recvmsg.clear()
+  def enterClinic(self):
+    super().__init__()
 
-  def closeEvent(self, e):
-    self.c.stop()
+  def __del__(self):
+    self.clientIP.stop()
 
 
 if __name__ == '__main__':
   app = QApplication(sys.argv)
-  w = CWidget()
+  w = Controller()
   sys.exit(app.exec_())
