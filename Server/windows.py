@@ -3,18 +3,31 @@ from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 import sys
 import socket
-from Server import server
+import server
 
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 
 port = 5614
 
-
-class CWidget(QWidget):
+class Sender():
   def __init__(self):
     super().__init__()
 
-    self.s = server.ServerSocket(self)
+  def sendMsg(self):
+    if not self.s.bListen:
+      self.sendmsg.clear()
+      return
+    sendmsg = self.sendmsg.text()
+    self.updateMsg(sendmsg)
+    print(sendmsg)
+    self.s.send(sendmsg)
+    self.sendmsg.clear()
+
+class Displayer(QWidget):
+  def __init__(self):
+    super().__init__()
+
+    self.s = server.Controller(self)
 
     self.initUI()
 
@@ -76,13 +89,15 @@ class CWidget(QWidget):
     label = QLabel('보낼 메시지')
     box.addWidget(label)
 
-    self.sendmsg = QLineEdit()
-    box.addWidget(self.sendmsg)
+
+    send = Sender()
+    send.sendmsg = QLineEdit()
+    box.addWidget(send.sendmsg)
 
     hbox = QHBoxLayout()
 
     self.sendbtn = QPushButton('보내기')
-    self.sendbtn.clicked.connect(self.sendMsg)
+    self.sendbtn.clicked.connect(send.sendMsg)
     hbox.addWidget(self.sendbtn)
 
     self.clearbtn = QPushButton('채팅창 지움')
@@ -130,15 +145,7 @@ class CWidget(QWidget):
     self.msg.addItem(QListWidgetItem(msg))
     self.msg.setCurrentRow(self.msg.count() - 1)
 
-  def sendMsg(self):
-    if not self.s.bListen:
-      self.sendmsg.clear()
-      return
-    sendmsg = self.sendmsg.text()
-    self.updateMsg(sendmsg)
-    print(sendmsg)
-    self.s.send(sendmsg)
-    self.sendmsg.clear()
+
 
   def clearMsg(self):
     self.msg.clear()
@@ -149,5 +156,5 @@ class CWidget(QWidget):
 
 if __name__ == '__main__':
   app = QApplication(sys.argv)
-  w = CWidget()
+  w = Displayer()
   sys.exit(app.exec_())
