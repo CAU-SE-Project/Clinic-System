@@ -1,4 +1,4 @@
-# Clinic-System
+# UC-1-Clinic-System
 Repository for Team A's subprogram, Clinic System
 
 ## Requirement
