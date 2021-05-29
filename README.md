@@ -8,7 +8,7 @@ Repository for Team A's subprogram, Clinic System
 
 
 ## Overview
-추가 필요
+![image](img/demo.png)
 
 ## Installation
 The package requires python3. You can follow the direction below to install virtual environment within the repository or install anaconda for python 3.
