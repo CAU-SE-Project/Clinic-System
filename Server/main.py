@@ -45,12 +45,12 @@ class Sender(Chat):
 
 class Displayer(Chat):
   def displayChat(self):
-    self.setWindowTitle('서버')
+    self.setWindowTitle('Clinic System Server')
 
     # 서버 설정 부분
     ipbox = QHBoxLayout()
 
-    gb = QGroupBox('서버 설정')
+    gb = QGroupBox('Server Setting')
     ipbox.addWidget(gb)
 
     box = QHBoxLayout()
@@ -65,7 +65,7 @@ class Displayer(Chat):
     box.addWidget(label)
     box.addWidget(self.port)
 
-    self.btn = QPushButton('서버 실행')
+    self.btn = QPushButton('Run')
     self.btn.setCheckable(True)
     self.btn.toggled.connect(self.toggleButton)
     box.addWidget(self.btn)
@@ -74,32 +74,32 @@ class Displayer(Chat):
 
     # 접속자 정보 부분
     infobox = QHBoxLayout()
-    gb = QGroupBox('접속자 정보')
+    gb = QGroupBox('Client Info')
     infobox.addWidget(gb)
 
     box = QHBoxLayout()
 
     self.guest = QTableWidget()
     self.guest.setColumnCount(2)
-    self.guest.setHorizontalHeaderItem(0, QTableWidgetItem('ip'))
-    self.guest.setHorizontalHeaderItem(1, QTableWidgetItem('port'))
+    self.guest.setHorizontalHeaderItem(0, QTableWidgetItem('IP'))
+    self.guest.setHorizontalHeaderItem(1, QTableWidgetItem('Port'))
 
     box.addWidget(self.guest)
     gb.setLayout(box)
 
     # 채팅창 부분
-    gb = QGroupBox('메시지')
+    gb = QGroupBox('Message')
     infobox.addWidget(gb)
 
     box = QVBoxLayout()
 
-    label = QLabel('받은 메시지')
+    label = QLabel('Received Message')
     box.addWidget(label)
 
     self.msg = QListWidget()
     box.addWidget(self.msg)
 
-    label = QLabel('보낼 메시지')
+    label = QLabel('Send Message')
     box.addWidget(label)
 
     self.sendmsg = QLineEdit()
@@ -107,11 +107,11 @@ class Displayer(Chat):
 
     hbox = QHBoxLayout()
 
-    self.sendbtn = QPushButton('보내기')
+    self.sendbtn = QPushButton('Send')
     self.sendbtn.clicked.connect(self.sendChat)
     hbox.addWidget(self.sendbtn)
 
-    self.clearbtn = QPushButton('채팅창 지움')
+    self.clearbtn = QPushButton('Clear Chat')
     self.clearbtn.clicked.connect(self.clearMsg)
     hbox.addWidget(self.clearbtn)
 
@@ -132,11 +132,11 @@ class Displayer(Chat):
       ip = self.ip.text()
       port = self.port.text()
       if self.serverIP.start(ip, int(port)):
-        self.btn.setText('서버 종료')
+        self.btn.setText('Shutdown')
     else:
       self.serverIP.stop()
       self.msg.clear()
-      self.btn.setText('서버 실행')
+      self.btn.setText('Run')
 
   def clearMsg(self):
     self.msg.clear()
