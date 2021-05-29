@@ -10,6 +10,8 @@ Repository for Team A's subprogram, Clinic System
 ## Overview
 ![image](img/demo.png)
 
+You can also view your **log** in [logfile.log](logfile.log) that generated automatically.
+
 ## Installation
 The package requires python3. You can follow the direction below to install virtual environment within the repository or install anaconda for python 3.
 - Download the repository
