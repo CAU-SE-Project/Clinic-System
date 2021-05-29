@@ -35,5 +35,5 @@ git clone https://github.com/CAU-SE-Project/Clinic-System
 cd Clinic-System
 conda create -n clinic_system python=3.6
 source activate clinic_system
-pip insatll PyQt5
+pip install PyQt5
 ```
