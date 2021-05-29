@@ -28,6 +28,7 @@ class ClientSocket:
 
     try:
       self.client.connect((ip, port))
+
     except Exception as e:
       print('Connect Error : ', e)
       return False

@@ -6,32 +6,44 @@ import socket
 import server
 
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-
 port = 5614
 
-class Sender():
+class Connection():
   def __init__(self):
-    super().__init__()
+    self.requestConnection()
 
-  def sendMsg(self):
-    if not self.s.bListen:
+  def requestConnection(self):
+    self.serverIP = server.Server(self)
+    #self.dbIP =
+
+class Chat():
+  def inputStream(self):
+    return self.sendmsg.text()
+
+  def checkNull(self, stream):
+    if len(stream) == 0:
+      return True
+    else :
+      return False
+
+class Sender(Chat):
+  def sendChat(self):
+    if not self.serverIP.bListen:
       self.sendmsg.clear()
       return
-    sendmsg = self.sendmsg.text()
-    self.updateMsg(sendmsg)
-    print(sendmsg)
-    self.s.send(sendmsg)
-    self.sendmsg.clear()
+    #sendmsg = self.sendmsg.text()
+    sendmsg = super().inputStream()
 
-class Displayer(QWidget):
-  def __init__(self):
-    super().__init__()
+    if super().checkNull(sendmsg):
+      pass
+    else :
+      self.updateMsg(sendmsg)
+      #print(self.ip.text(),self.port.text(), sendmsg)
+      self.serverIP.send(sendmsg)
+      self.sendmsg.clear()
 
-    self.s = server.Controller(self)
-
-    self.initUI()
-
-  def initUI(self):
+class Displayer(Chat):
+  def displayChat(self):
     self.setWindowTitle('서버')
 
     # 서버 설정 부분
@@ -89,15 +101,13 @@ class Displayer(QWidget):
     label = QLabel('보낼 메시지')
     box.addWidget(label)
 
-
-    send = Sender()
-    send.sendmsg = QLineEdit()
-    box.addWidget(send.sendmsg)
+    self.sendmsg = QLineEdit()
+    box.addWidget(self.sendmsg)
 
     hbox = QHBoxLayout()
 
     self.sendbtn = QPushButton('보내기')
-    self.sendbtn.clicked.connect(send.sendMsg)
+    self.sendbtn.clicked.connect(self.sendChat)
     hbox.addWidget(self.sendbtn)
 
     self.clearbtn = QPushButton('채팅창 지움')
@@ -120,19 +130,27 @@ class Displayer(QWidget):
     if state:
       ip = self.ip.text()
       port = self.port.text()
-      if self.s.start(ip, int(port)):
+      if self.serverIP.start(ip, int(port)):
         self.btn.setText('서버 종료')
     else:
-      self.s.stop()
+      self.serverIP.stop()
       self.msg.clear()
       self.btn.setText('서버 실행')
 
+  def clearMsg(self):
+    self.msg.clear()
+
+  def closeEvent(self, e):
+      self.serverIP.stop()
+
+class DatabaseConnection(Chat):
   def updateClient(self, addr, isConnect=False):
     row = self.guest.rowCount()
     if isConnect:
       self.guest.setRowCount(row + 1)
       self.guest.setItem(row, 0, QTableWidgetItem(addr[0]))
       self.guest.setItem(row, 1, QTableWidgetItem(str(addr[1])))
+      #print(addr[0], addr[1])
     else:
       for r in range(row):
         ip = self.guest.item(r, 0).text()  # ip
@@ -145,16 +163,17 @@ class Displayer(QWidget):
     self.msg.addItem(QListWidgetItem(msg))
     self.msg.setCurrentRow(self.msg.count() - 1)
 
+class Controller(QWidget, Connection, Sender, Displayer, DatabaseConnection):
+  def __init__(self):
+    self.enterClinic()
+    self.displayChat()
 
+  def enterClinic(self):
+    super().__init__()
 
-  def clearMsg(self):
-    self.msg.clear()
-
-  def closeEvent(self, e):
-    self.s.stop()
 
 
 if __name__ == '__main__':
   app = QApplication(sys.argv)
-  w = Displayer()
+  w = Controller()
   sys.exit(app.exec_())

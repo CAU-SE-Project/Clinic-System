@@ -116,6 +116,7 @@ class CWidget(QWidget):
   def sendMsg(self):
     sendmsg = self.sendmsg.toPlainText()
     self.c.send(sendmsg)
+    # print(self.ip.text(),self.port.text(), sendmsg)
     self.sendmsg.clear()
 
   def clearMsg(self):

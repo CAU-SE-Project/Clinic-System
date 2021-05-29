@@ -3,7 +3,7 @@ from socket import *
 from PyQt5.QtCore import Qt, pyqtSignal, QObject
 
 
-class Controller(QObject):
+class Server(QObject):
   update_signal = pyqtSignal(tuple, bool)
   recv_signal = pyqtSignal(str)
 
@@ -72,9 +72,10 @@ class Controller(QObject):
       else:
         msg = str(recv, encoding='utf-8')
         if msg:
+          print(str(client.getpeername()[1])+' : '+msg)
+          msg = str(client.getpeername()[1])+' : '+msg
           self.send(msg)
           self.recv_signal.emit(msg)
-          print('[RECV]:', addr, msg)
 
     self.removeClient(addr, client)
 
