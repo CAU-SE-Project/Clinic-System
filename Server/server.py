@@ -1,9 +1,32 @@
 from threading import Thread
 from socket import *
 from PyQt5.QtCore import Qt, pyqtSignal, QObject
+import logging
 
+class Logger():
+  def __init__(self):
+    self.logger = logging.getLogger()
+    self.logger.setLevel(logging.INFO)
 
-class Server(QObject):
+    self.formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+    # log 출력
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(self.formatter)
+    self.logger.addHandler(stream_handler)
+
+    # log를 파일에 출력
+    file_handler = logging.FileHandler('../logfile.log')
+    file_handler.setFormatter(self.formatter)
+    self.logger.addHandler(file_handler)
+
+  def logConnection(self, stream):
+    self.logger.info(stream)
+
+  def logChat(self, stream):
+    self.logger.info(stream)
+
+class Server(QObject, Logger):
   update_signal = pyqtSignal(tuple, bool)
   recv_signal = pyqtSignal(str)
 
@@ -17,6 +40,7 @@ class Server(QObject):
 
     self.update_signal.connect(self.parent.updateClient)
     self.recv_signal.connect(self.parent.updateMsg)
+    self.logConnection('Initially Server Connected')
 
   def __del__(self):
     self.stop()
@@ -33,7 +57,7 @@ class Server(QObject):
       self.bListen = True
       self.t = Thread(target=self.listen, args=(self.server,))
       self.t.start()
-      print('Server Listening...')
+      self.logConnection('Server Listening...')
 
     return True
 
@@ -41,7 +65,7 @@ class Server(QObject):
     self.bListen = False
     if hasattr(self, 'server'):
       self.server.close()
-      print('Server Stop')
+      self.logConnection('Server Stop')
 
   def listen(self, server):
     while self.bListen:
@@ -49,7 +73,8 @@ class Server(QObject):
       try:
         client, addr = server.accept()
       except Exception as e:
-        print('Accept() Error : ', e)
+        self.logConnection('Accept Error')
+        print('Accept() Error :', e)
         break
       else:
         self.clients.append(client)
@@ -67,15 +92,17 @@ class Server(QObject):
       try:
         recv = client.recv(1024)
       except Exception as e:
+        self.logConnection('Recv Error')
         print('Recv() Error :', e)
         break
       else:
         msg = str(recv, encoding='utf-8')
         if msg:
-          print(str(client.getpeername()[1])+' : '+msg)
           msg = str(client.getpeername()[1])+' : '+msg
+
           self.send(msg)
           self.recv_signal.emit(msg)
+          self.logChat(msg)
 
     self.removeClient(addr, client)
 

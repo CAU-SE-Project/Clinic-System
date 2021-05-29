@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import *
 import sys
 import socket
 import server
+import logging
 
 QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
 port = 5614
