@@ -36,12 +36,12 @@ class Sender(Chat):
 
 class Displayer():
   def displayChat(self):
-    self.setWindowTitle('클라이언트')
+    self.setWindowTitle('Clinic System Client')
 
     # 클라이언트 설정 부분
     ipbox = QHBoxLayout()
 
-    gb = QGroupBox('서버 설정')
+    gb = QGroupBox('Server Connection')
     ipbox.addWidget(gb)
 
     box = QHBoxLayout()
@@ -57,7 +57,7 @@ class Displayer():
     box.addWidget(label)
     box.addWidget(self.port)
 
-    self.btn = QPushButton('접속')
+    self.btn = QPushButton('Connect')
     self.btn.clicked.connect(self.connectClicked)
     box.addWidget(self.btn)
 
@@ -65,18 +65,18 @@ class Displayer():
 
     # 채팅창 부분
     infobox = QHBoxLayout()
-    gb = QGroupBox('메시지')
+    gb = QGroupBox('Chatting')
     infobox.addWidget(gb)
 
     box = QVBoxLayout()
 
-    label = QLabel('받은 메시지')
+    label = QLabel('Received Message')
     box.addWidget(label)
 
     self.recvmsg = QListWidget()
     box.addWidget(self.recvmsg)
 
-    label = QLabel('보낼 메시지')
+    label = QLabel('Send Message')
     box.addWidget(label)
 
     self.sendmsg = QTextEdit()
@@ -86,11 +86,11 @@ class Displayer():
     hbox = QHBoxLayout()
 
     box.addLayout(hbox)
-    self.sendbtn = QPushButton('보내기')
+    self.sendbtn = QPushButton('Send')
     self.sendbtn.setAutoDefault(True)
     self.sendbtn.clicked.connect(self.sendChat)
 
-    self.clearbtn = QPushButton('채팅창 지움')
+    self.clearbtn = QPushButton('Clear Chat')
     self.clearbtn.clicked.connect(self.clearMsg)
 
     hbox.addWidget(self.sendbtn)
@@ -117,17 +117,17 @@ class DatabaseConnection(Chat):
       ip = self.ip.text()
       port = self.port.text()
       if self.clientIP.connectServer(ip, int(port)):
-        self.btn.setText('접속 종료')
+        self.btn.setText('Shutdown')
       else:
         self.clientIP.stop()
         self.sendmsg.clear()
         self.recvmsg.clear()
-        self.btn.setText('접속')
+        self.btn.setText('Connect')
     else:
       self.clientIP.stop()
       self.sendmsg.clear()
       self.recvmsg.clear()
-      self.btn.setText('접속')
+      self.btn.setText('Connect')
 
   def updateMsg(self, msg):
     self.recvmsg.addItem(QListWidgetItem(msg))

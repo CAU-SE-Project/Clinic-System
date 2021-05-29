@@ -4,3 +4,11 @@
 2021-05-30 06:45:11,697 - root - INFO - Server Listening...
 2021-05-30 06:45:32,677 - root - INFO - Server Stop
 2021-05-30 06:45:32,677 - root - INFO - Accept Error
+2021-05-30 06:52:55,889 - root - INFO - Initially Server Connected
+2021-05-30 06:53:08,110 - root - INFO - Initially Server Connected
+2021-05-30 06:53:30,269 - root - INFO - Server Listening...
+2021-05-30 06:53:51,422 - root - INFO - Recv Error
+2021-05-30 06:54:12,217 - root - INFO - Server Stop
+2021-05-30 06:54:12,217 - root - INFO - Accept Error
+2021-05-30 06:54:12,773 - root - INFO - Server Listening...
+2021-05-30 06:54:19,012 - root - INFO - 55985 : Hi hello~
