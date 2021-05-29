@@ -109,7 +109,7 @@ class Displayer():
     self.recvmsg.clear()
 
   def closeEvent(self, e):
-    self.c.stop()
+    self.clientIP.stop()
 
 class DatabaseConnection(Chat):
   def connectClicked(self):
