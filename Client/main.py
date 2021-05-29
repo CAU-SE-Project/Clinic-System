@@ -133,7 +133,7 @@ class DatabaseConnection(Chat):
     self.recvmsg.addItem(QListWidgetItem(msg))
 
   def updateDisconnect(self):
-    self.btn.setText('접속')
+    self.btn.setText('Connect')
 
 class Controller(QWidget, Connection, Sender, Displayer, DatabaseConnection):
   def __init__(self):
